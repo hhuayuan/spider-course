@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>这里是页面标题</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            height: 50px;
+            width: 100%;
+            background-color: #141d2b;
+            color: #fff;
+            line-height: 50px;
+        }
+
+        .navbar::before {
+            content: "这是前面的内容";
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">这是顶部栏</div>
+    这里是课程13的网页内容。
+</body>
+<script>
+    var bodyElement = document.body;
+    var divElement = document.createElement("div");
+    
+    bodyElement.appendChild(divElement);
+
+    var s = "6L+Z5pivQmFzZTY057yW56CB55qE5YaF5a65";
+    divElement.innerText = fromBase64(s);
+
+    function fromBase64(str) {
+        const binaryString = atob(str);
+        const decodedArray = Uint8Array.from({ length: binaryString.length }, (x, i) => binaryString.charCodeAt(i));
+        const decoder = new TextDecoder();
+        return decoder.decode(decodedArray);
+    }
+</script>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>第17课时 - 浏览器指纹</title>
+    <style>
+        span {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="fingerprint"></div>
+</body>
+<script>
+    function getBrowserFingerprint() {
+        let fingerprint = {};
+
+        // 获取浏览器信息
+        fingerprint.userAgent = navigator.userAgent;
+        fingerprint.language = navigator.language;
+        fingerprint.platform = navigator.platform;
+        fingerprint.vendor = navigator.vendor;
+        fingerprint.cookieEnabled = navigator.cookieEnabled;
+        fingerprint.javaEnabled = navigator.javaEnabled();
+        fingerprint.doNotTrack = navigator.doNotTrack;
+
+        // 获取屏幕信息
+        fingerprint.screenWidth = screen.width;
+        fingerprint.screenHeight = screen.height;
+        fingerprint.colorDepth = screen.colorDepth;
+
+        // 获取插件信息
+        fingerprint.plugins = Array.from(navigator.plugins).map(plugin => plugin.name);
+
+        // 获取Canvas指纹
+        function getCanvasFingerprint() {
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '16px Arial';
+            ctx.fillText('spiderbuf', 2, 2);
+            return canvas.toDataURL();
+        }
+        fingerprint.canvasFingerprint = getCanvasFingerprint();
+
+        // 获取WebGL指纹
+        function getWebGLFingerprint() {
+            let canvas = document.createElement('canvas');
+            let gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return null;
+            let debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            return gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) + '~' + gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        }
+        fingerprint.webglFingerprint = getWebGLFingerprint();
+
+        return fingerprint;
+    }
+
+    var fingerprintDiv = document.getElementById('fingerprint');
+    var obj = getBrowserFingerprint();
+
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) { // 检查是否是对象自身的属性
+            var pElement = document.createElement('p');
+            pElement.innerText = `${key}： ${obj[key]}`;
+            fingerprintDiv.appendChild(pElement);
+        }
+    }
+</script>
+</html>

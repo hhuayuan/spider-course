@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>第14课时 - JavaScript动态获取数据</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #141d2b;
+            border-collapse: collapse;
+        }
+
+        .navbar {
+            height: 50px;
+            width: 100%;
+            background-color: #141d2b;
+            color: #fff;
+            line-height: 50px;
+            padding-left: 10px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">Ajax获取后台数据</div>
+    <table id="dataTable" style="margin-left: 20px;">
+        <thead>
+            <tr>
+                <th style="width: 300px;">排名</th>
+                <th style="width: 300px;">密码</th>
+                <th style="width: 300px;">破解耗时</th>
+                <th style="width: 300px;">使用数</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+<script>
+    fetch('/api')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            var dataTable = document.getElementById('dataTable');
+            data.data.forEach((value, index) => {
+                var row = dataTable.insertRow();
+                var rankingCell = row.insertCell();
+                rankingCell.innerText = value.ranking;
+
+                var passwdCell = row.insertCell();
+                passwdCell.innerText = value.passwd;
+
+                var time_to_crackItCell = row.insertCell();
+                time_to_crackItCell.innerText = value.time_to_crack_it;
+
+                var used_countCell = row.insertCell();
+                used_countCell.innerText = value.used_count;
+            })
+        })
+        .catch(error => {
+            console.log(error);
+        });
+</script>
+</html>

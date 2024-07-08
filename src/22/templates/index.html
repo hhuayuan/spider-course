@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>第22课时 - 验证时间戳签名的网页</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex;display: -webkit-flex;width: 100%;justify-content: center;">
+        <div style="flex: 0 1 80%;margin-top: 50px;">
+            <div><button onclick="getdata()">查询数据</button></div>
+            <div>
+                <table id="dataTable" style="margin-left: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">排名</th>
+                            <th style="width: 300px;">密码</th>
+                            <th style="width: 300px;">破解耗时</th>
+                            <th style="width: 300px;">使用数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+    function getdata() {
+        var timeStamp = Math.trunc(new Date().getTime() / 1000);
+        var _md5 = md5(timeStamp);
+
+        fetch(`/api/${timeStamp}/${_md5}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var dataTable = document.getElementById('dataTable');
+                data.data.forEach((value, index) => {
+                    var row = dataTable.insertRow();
+                    var rankingCell = row.insertCell();
+                    rankingCell.innerText = value.ranking;
+
+                    var passwdCell = row.insertCell();
+                    passwdCell.innerText = value.passwd;
+
+                    var time_to_crackItCell = row.insertCell();
+                    time_to_crackItCell.innerText = value.time_to_crack_it;
+
+                    var used_countCell = row.insertCell();
+                    used_countCell.innerText = value.used_count;
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+</script>
+</html>

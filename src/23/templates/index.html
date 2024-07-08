@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>第23课时 - 用户行为检测的网页</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+        }
+
+        .slider-container {
+            width: 300px;
+            position: relative;
+            background-color: #ddd;
+            height: 36px;
+        }
+
+        .slider {
+            width: 36px;
+            height: 36px;
+            background-color: #333;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            color: #fff;
+            line-height: 36px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex;display: -webkit-flex;width: 100%;justify-content: center;">
+        <div style="flex: 0 1 80%;margin-top: 50px;">
+            <div class="slider-container">
+                <div id="slider" class="slider">></div>
+            </div>
+            <div id="log"></div>
+            <div>
+                <table id="dataTable" style="margin-left: 20px;">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">排名</th>
+                            <th style="width: 300px;">密码</th>
+                            <th style="width: 300px;">破解耗时</th>
+                            <th style="width: 300px;">使用数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const container = document.querySelector('.slider-container');
+    const slider = document.querySelector('.slider');
+    var startX = slider.offsetLeft;
+    var dic = [];
+
+    slider.addEventListener('mousedown', function (e) {
+        startX = e.clientX - slider.offsetLeft;
+        console.log('slider mousedown');
+        container.addEventListener('mousemove', mousemoveEvent);
+    });
+    slider.addEventListener('mouseup', function (e) {
+        console.log('slider mouseup');
+        container.removeEventListener('mousemove', mousemoveEvent);
+    });
+
+    function mousemoveEvent(e) {
+        let left = e.clientX - startX;
+        console.log(`container mousemove ${e.clientY}`);
+        if (left < 0) {
+            left = 0;
+        } else if (left >= container.offsetWidth - slider.offsetWidth) {
+            left = container.offsetWidth - slider.offsetWidth;
+            container.removeEventListener('mousemove', mousemoveEvent);
+            console.log(Object.keys(dic).length);
+            const log = document.getElementById('log');
+            log.innerText = Object.keys(dic).length;
+            if(Object.keys(dic).length > 1){
+                getdata();
+            }
+        }
+        slider.style.left = left + 'px';
+        dic[e.clientY] = e.clientY;
+    }
+
+    function getdata() {
+        var timeStamp = Math.trunc(new Date().getTime() / 1000);
+        var _md5 = md5(timeStamp);
+
+        fetch(`/api`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var dataTable = document.getElementById('dataTable');
+                data.data.forEach((value, index) => {
+                    var row = dataTable.insertRow();
+                    var rankingCell = row.insertCell();
+                    rankingCell.innerText = value.ranking;
+
+                    var passwdCell = row.insertCell();
+                    passwdCell.innerText = value.passwd;
+
+                    var time_to_crackItCell = row.insertCell();
+                    time_to_crackItCell.innerText = value.time_to_crack_it;
+
+                    var used_countCell = row.insertCell();
+                    used_countCell.innerText = value.used_count;
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+</script>
+</html>

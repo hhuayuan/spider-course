@@ -1,0 +1,30 @@
+Python解释器：Python 3.11.1
+https://www.python.org/ftp/python/3.11.1/python-3.11.1-amd64.exe
+
+
+Node.js 18.20.2
+https://nodejs.org/dist/v18.20.2/node-v18.20.2-x64.msi
+
+
+Python开发工具：PyCharm Community Edition 2022.2.5
+https://download.jetbrains.com/python/pycharm-community-2022.2.5.exe
+
+
+Web开发工具：VS Code 1.88.1
+https://vscode.download.prss.microsoft.com/dbazure/download/stable/e170252f762678dec6ca2cc69aba1570769a5d39/VSCodeUserSetup-x64-1.88.1.exe
+
+
+Web服务器：Nginx 1.24.0
+https://nginx.org/download/nginx-1.24.0.zip
+
+
+抓包工具：Fiddler Classic 5.0.20211.51073 for .NET 4.6.1
+https://www.telerik.com/download/fiddler
+
+Chrome WebDriver
+https://storage.googleapis.com/chrome-for-testing-public/125.0.6422.78/win64/chromedriver-win64.zip
+
+
+备注：
+1、Fiddler 需要自行打开以上页面并输入Email后进行下载，记得选择Fiddler Classic才是免费版；
+2、不需要严格对应以上的版本号，大部分情况下只需要保证你安装的版本不低于以上版本即可。

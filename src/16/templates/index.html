@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>第16课时 - Selenium攻防</title>
+    <style>
+        span {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>WebDriver:<span id="webdriver"></span></div>
+    <div>Plugins:<span id="plugins"></span></div>
+    <div>Headless:<span id="headless"></span></div>
+    <table id="dataTable" style="margin-left: 20px;">
+        <thead>
+            <tr>
+                <th style="width: 300px;">排名</th>
+                <th style="width: 300px;">密码</th>
+                <th style="width: 300px;">破解耗时</th>
+                <th style="width: 300px;">使用数</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+<script>
+    var webdriverSpan = document.getElementById("webdriver");
+    webdriverSpan.innerText = navigator.webdriver;
+    var pluginsSpan = document.getElementById("plugins");
+    pluginsSpan.innerText = navigator.plugins.length;
+
+    const userAgent = navigator.userAgent;
+    var headlessSpan = document.getElementById("headless");
+    headlessSpan.innerText = userAgent.indexOf('headless');
+
+    if ((!navigator.webdriver) & (navigator.plugins.length > 0) & (userAgent.indexOf('headless') < 0)) {
+        fetch('/api')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            var dataTable = document.getElementById('dataTable');
+            data.data.forEach((value, index) => {
+                var row = dataTable.insertRow();
+                var rankingCell = row.insertCell();
+                rankingCell.innerText = value.ranking;
+
+                var passwdCell = row.insertCell();
+                passwdCell.innerText = value.passwd;
+
+                var time_to_crackItCell = row.insertCell();
+                time_to_crackItCell.innerText = value.time_to_crack_it;
+
+                var used_countCell = row.insertCell();
+                used_countCell.innerText = value.used_count;
+            })
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }    
+</script>
+</html>
