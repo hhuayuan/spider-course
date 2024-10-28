@@ -7,3 +7,6 @@
 本课程以横向教学为主，介绍爬虫实际工作中用到的技术、思路及工具，并且以边开发网页边爬取的方式逐步深入爬虫与反爬虫的攻防知识，知己知彼。
 
 编程的一些注意事项：开发环境的路径以及Python脚本文件名不要包含中文、空格等内容；初学者推荐选用开箱即用的开发工具，如：PyCharm等。
+#### 课程链接
+Udemy： https://www.udemy.com/course/python-spiderbuf
+B站：https://www.bilibili.com/cheese/play/ss19916
